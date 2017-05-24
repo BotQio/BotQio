@@ -1,0 +1,118 @@
+v0.5.1 - December 25th, 2014
+* WEB - Added notification system to notify users of new features
+* WEB - Added optional google captcha system
+* WEB - Multiple queues per bot support, with priority
+* WEB - Queues can have a delay before another job is taken
+* WEB - Reduce Amazon requirements for non-amazon / non-public installs
+* WEB - simple script for installing botqueue onto a standalone Ubuntu machine
+* WEB - Cleaned up the app and token pages
+* WEB - Updated the dashboard to be more lightweight and responsive
+* BUMBLEBEE - s3g python library for MakerBot machines
+* BUMBLEBEE - Some amount of Cura support. Still ongoing
+* BUMBLEBEE - Fixed OAuth signatures with python errors
+* BUMBLEBEE - Actually log if it can't connect to the serial port
+* BUMBLEBEE - Fixed log files growing out of control
+* BUMBLEBEE - Moved to using pip to install
+* BUMBLEBEE - Automatic updates from pip version.
+* BUMBLEBEE - Drivers automatically download and install
+* BUMBLEBEE - Automatically run without curses if there's no display
+
+v0.5 - September 8th, 2014
+
+* WEB - Made registering a bot easier
+* WEB - Enabled auto-import of slicers from github
+* WEB - Added local storage option
+* WEB - Made BotQueue easier to install
+* WEB - Added bot retirement
+* WEB - Fixed job clock count
+* WEB - Added a patching system for database updates
+* WEB - Fixed dashboard refresh
+* WEB - Fixed UI elements
+* WEB - Moved most libraries to composer
+* WEB - Email works with SMTP or SES
+* WEB - Fixed some race conditions with job grabbing
+* WEB - Added unit testing to some code
+* WEB - Prevented HTML and SQL injection
+* BUMBLEBEE - Moved to a separate repository
+* BUMBLEBEE - Set up Slic3r auto downloading
+* BUMBLEBEE - Now can run on smaller screens like PiTFT
+* BUMBLEBEE/WEB - Fixed many other bugs that can't be documented here
+
+v0.4 - Online Config - July 4th, 2013
+
+* WEB - record local and remote IP when getting bot updates
+* WEB - show IP addresses on bot view page
+* WEB - added 30 day list to leaderboards
+* WEB - bulk create multi-job prints from an uploaded .zip file
+* WEB - add support for .zip files to file view page
+* WEB - add support for showing parent files to job page
+* WEB - pull in all files from thingiverse.com/thing:#### style urls
+* WEB - add 'bump' feature to move a job to the top of the queue
+* WEB - record client name and version when updating bot status.
+* WEB - show all apps requesting access from your current IP.
+* WEB - if you're on the same IP, high likelihood its your bot
+* WEB - remote address is pretty tough to fake too.
+* WEB - add name info to app registration
+* WEB - Remove access token for a certain app.
+* WEB - Implement getmybots api call
+* WEB - Implement botscanresults api call
+* WEB - Allow user to manually add new machines & configure them (serial port, speed, etc)
+* WEB - ability to assign each bot to an app.
+* WEB - online editing of bot configs.
+* WEB - add contrast and brightness configuration settings to driver config
+* WEB - prevent editing of driver unless bot is offline, idle, error, or qa
+* WEB - fixed error with field size for storing temperature logs.
+* WEB - allow renaming of jobs
+* WEB - fix register bot section.
+* WEB - app token should list bots
+* WEB - bot view page should show app token
+* WEB - better flow for app approval -> bot registration
+* WEB - if no device scan is detected on the driver page, show an error/warning message.
+* WEB - update help docs with new configuration setup.
+* BUMBLEBEE - report local IP address
+* BUMBLEBEE - headless app authentication support - based on IP
+* BUMBLEBEE - new machine discovery
+* BUMBLEBEE - send list of serial ports and webcams to site for bot configuration.
+* BUMBLEBEE - pull list of bots + config from web directly
+* BUMBLEBEE - add contrast and brightness configuration settings to webcam
+* BUMBLEBEE - update worker thread when config changes.
+* BUMBLEBEE - stop worker thread when bot is removed from our list.
+* BUMBLEBEE - don't show bot list until we've scanned devices.
+* BUMBLEBEE - linux webcam detection.
+* BUMBLEBEE - add name parameter to create job api calls
+* BUMBLEBEE/WEB - per-driver can slice configuration via website
+
+v0.3 - April 24, 2013
+
+* WEB - add ability to make comments on individual jobs
+* WEB - fixed a major security flaw that allowed people to see your jobs
+* WEB - add organization to job view page - tabs?
+* WEB - add canceled status to jobs & remove all calls to delete()
+* WEB - Allow pausing / resuming through website
+* WEB - create job time logging table to better track time spent in jobs (and be able to handle errors, dropped jobs, and canceled jobs)
+* WEB - create script to populate job_clock with times from existing jobs.
+* WEB - create job_clock entry on start of job.
+* WEB - close job clock entry on job drop
+* WEB - close job clock entry on job finish
+* WEB - update main stats page to reflect job_clock times
+* WEB - update bot stats page to reflect job_clock times
+* WEB - update queue stats page to reflect job_clock times
+* WEB - added leaderboard to stats page.
+* WEB - update time displays to include more digits (eg: 1.2 hours vs 1 hour)
+* WEB - add source info for jobs added by url.
+* WEB - added webcam display to dashboard, bot, and job.
+* WEB - modify dashboard ajax to preload images and then fade-in new content
+* WEB - add ajax selector for 4 different views: details, big thumbs, med thumbs, small thumbs
+* WEB - add ajax checkbox for turning on/off auto-update.
+* WEB - add ajax call to save dashboard style stuff
+* WEB - fix top navigation to show what page/area you are at
+* WEB - update help instructions to add webcam config info
+* WEB - get real default image for bots w/o webcam
+
+* BUMBLEBEE - allow pausing and unpausing based on api status change.
+* BUMBLEBEE - added webcam uploading during idle and printing periods
+* BUMBLEBEE - fix race condition when workerbee is changing the status of the bot
+* BUMBLEBEE - add watermark to each image
+* BUMBLEBEE - resize each image to 640x480
+* BUMBLEBEE - save each image at 60% quality (jpeg)
+* BUMBLEBEE - compile slic3r and update install script

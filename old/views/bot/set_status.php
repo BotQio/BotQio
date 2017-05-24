@@ -1,0 +1,3 @@
+<? if ($megaerror): ?>
+	<?= $megaerror ?>
+<? endif ?>
