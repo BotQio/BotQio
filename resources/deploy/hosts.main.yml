@@ -1,0 +1,13 @@
+hosts:
+  .base: &base
+    roles: app
+    deploy_path: /var/www/html
+    remote_user: deployer
+    identity_file: ~/.ssh/botqio-deployer
+
+  .dev-server: &dev-server
+    <<: *base
+    stage: dev
+
+  dev.botq.io:
+    <<: *dev-server

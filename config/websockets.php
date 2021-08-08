@@ -61,10 +61,10 @@ return [
 
     'apps' => [
         [
-            'id' => env('PUSHER_APP_ID'),
+            'id' => env('PUSHER_APP_ID', 'BotQio'),
             'name' => env('APP_NAME'),
             'host' => env('PUSHER_APP_HOST'),
-            'key' => env('PUSHER_APP_KEY'),
+            'key' => env('PUSHER_APP_KEY', 'BotQio-key'),
             'secret' => env('PUSHER_APP_SECRET'),
             'path' => env('PUSHER_APP_PATH'),
             'capacity' => null,

@@ -1,0 +1,8 @@
+hosts:
+  example.com:
+    roles: app
+    deploy_path: /var/www/html
+    become: deployer
+    stage: prod
+    user: deployer
+    identityFile: ~/.ssh/botqio-deployer

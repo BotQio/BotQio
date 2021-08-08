@@ -21,7 +21,7 @@ window.Pusher.log = function(message) {
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'pusher-botqueue-key',
+    key: 'BotQio-key',
     wsHost: window.location.hostname,
     wsPath: '/ws',
     forceTLS: false,
