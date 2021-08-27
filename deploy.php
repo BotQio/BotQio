@@ -39,12 +39,13 @@ task('build', function () {
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 
-before('deploy:symlink', 'deploy:botqio');
+after('deploy:symlink', 'deploy:botqio');
 
 desc('First time setup');
 task('deploy:first_time_setup', function () {
     artisan('key:generate --force')();
     artisan('passport:keys')();
+    artisan('passport:client --personal --no-interaction --name="BotQio Personal Client"')();
 });
 
 desc('Clear deployed caching');
@@ -80,6 +81,7 @@ task('deploy:botqio', function () {
     // This is the normal flow
     artisan('migrate --force')();
     artisan('horizon:terminate')();
+    artisan('websockets:restart')();
 
     invoke('deploy:cache_bust');
 });
