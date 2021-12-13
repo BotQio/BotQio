@@ -4,8 +4,9 @@ namespace Tests\Helpers;
 
 use App;
 use Illuminate\Support\Arr;
-use Laravel\Passport\ClientRepository;
-use Laravel\Passport\PersonalAccessClient;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
+use Laravel\Passport\Passport;
 
 trait PassportHelper
 {
@@ -17,17 +18,25 @@ trait PassportHelper
             return;
         }
 
-        $clients = app(ClientRepository::class);
+        $client = Passport::client()->forceFill([
+            'user_id' => null,
+            'name' => 'TestPersonalClient',
+            'secret' => Str::random(40),
+            'provider' => null,
+            'redirect' => 'http://localhost',
+            'personal_access_client' => true,
+            'password_client' => false,
+            'revoked' => false,
+        ]);
 
-        $client = $clients->createPersonalAccessClient(
-            null,
-            'TestPersonalClient',
-            'http://localhost'
-        );
+        $client->save();
 
-        $accessClient = new PersonalAccessClient();
+        $accessClient = Passport::personalAccessClient();
         $accessClient->client_id = $client->id;
         $accessClient->save();
+
+        Config::set('passport.personal_access_client.id', $client->id);
+        Config::set('passport.personal_access_client.secret', $client->secret);
 
         $this->userClientSetUp = true;
     }

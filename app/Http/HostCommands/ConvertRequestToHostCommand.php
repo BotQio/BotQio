@@ -8,8 +8,10 @@ use App\Errors\HostErrors;
 use App\Exceptions\HostRequestAlreadyDeleted;
 use App\Exceptions\OauthHostClientNotSetup;
 use App\Exceptions\OauthHostKeysMissing;
+use App\Exceptions\PersonalAccessClientMissing;
 use App\Models\HostRequest;
 use App\Http\Resources\HostResource;
+use Exception;
 use Illuminate\Support\Collection;
 
 class ConvertRequestToHostCommand
@@ -24,6 +26,7 @@ class ConvertRequestToHostCommand
      */
     public function __invoke($data)
     {
+        /** @var HostRequest $host_request */
         $host_request = HostRequest::find($data->get('id'));
 
         if ($host_request == null) {
@@ -46,7 +49,9 @@ class ConvertRequestToHostCommand
             return HostErrors::oauthHostKeysMissing();
         } catch (HostRequestAlreadyDeleted $e) {
             return HostErrors::hostRequestNotFound();
-        } catch (\Exception $e) {
+        } catch (PersonalAccessClientMissing $e) {
+            return HostErrors::oauthNoPersonalAccessToken();
+        } catch (Exception $e) {
             report($e);
 
             return HostErrors::unknownError();

@@ -17,16 +17,11 @@ class ConvertRequestToHostCommandTest extends TestCase
 {
     use PassportHelper;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->setUpPersonalClient();
-    }
-
     /** @test */
     public function tryingToAccessHostWithoutItBeingClaimedIsNotAllowed()
     {
+        $this->setUpPersonalClient();
+
         $host_request = $this->hostRequest()->create();
 
         $this
@@ -46,6 +41,8 @@ class ConvertRequestToHostCommandTest extends TestCase
      */
     public function conversionToHostReturnsAccessToken()
     {
+        $this->setUpPersonalClient();
+
         $host_request = $this->hostRequest()->create();
 
         $host_name = 'My super unique test name';
@@ -97,6 +94,8 @@ class ConvertRequestToHostCommandTest extends TestCase
      */
     public function conversionToHostCanOnlyHappenOnce()
     {
+        $this->setUpPersonalClient();
+
         $host_request = $this->hostRequest()->create();
 
         $host_name = 'My super unique test name';
@@ -137,6 +136,8 @@ class ConvertRequestToHostCommandTest extends TestCase
     /** @test */
     public function conversionToHostOnRequestThatDoesNotExistThrowsAnError()
     {
+        $this->setUpPersonalClient();
+
         $this
             ->postJson('/host', [
                 'command' => 'ConvertRequestToHost',
@@ -153,6 +154,8 @@ class ConvertRequestToHostCommandTest extends TestCase
      */
     public function tokenIsValid()
     {
+        $this->setUpPersonalClient();
+
         $jwt_parser = app(JwtParser::class);
 
         $host_request = $this->hostRequest()->create();
@@ -218,5 +221,25 @@ class ConvertRequestToHostCommandTest extends TestCase
             ->assertExactJson(HostErrors::oauthHostKeysMissing()->toArray());
 
         Passport::loadKeysFrom($originalKeyPath);
+    }
+
+    /** @test */
+    public function missingPersonalAccessTokenReturnsAnErrorResponse()
+    {
+        $hostRequest = $this->hostRequest()
+            ->state(HostRequestStatusEnum::CLAIMED)
+            ->hostname('My Test Host')
+            ->claimer($this->mainUser)
+            ->create();
+
+        $this
+            ->postJson('/host', [
+                'command' => 'ConvertRequestToHost',
+                'data' => [
+                    'id' => $hostRequest->id,
+                ],
+            ])
+            ->assertStatus(Response::HTTP_INTERNAL_SERVER_ERROR)
+            ->assertExactJson(HostErrors::oauthNoPersonalAccessToken()->toArray());
     }
 }

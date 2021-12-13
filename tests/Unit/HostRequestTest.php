@@ -5,15 +5,18 @@ namespace Tests\Unit;
 use App\Enums\HostRequestStatusEnum;
 use App\Exceptions\HostAlreadyClaimed;
 use App\Exceptions\HostRequestAlreadyDeleted;
-use App\Exceptions\OauthHostClientNotSetup;
-use App\Exceptions\OauthHostKeysMissing;
+use App\Exceptions\PersonalAccessClientMissing;
 use App\Models\HostRequest;
+use Exception;
+use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
 class HostRequestTest extends TestCase
 {
+    use PassportHelper;
+
     /** @test
-     * @throws HostAlreadyClaimed
+     * @throws Exception
      */
     public function aUserCanClaimAHostRequest()
     {
@@ -29,7 +32,7 @@ class HostRequestTest extends TestCase
     }
 
     /** @test
-     * @throws HostAlreadyClaimed
+     * @throws Exception
      */
     public function aUserCannotClaimHostAlreadyClaimedByOtherUser()
     {
@@ -49,13 +52,27 @@ class HostRequestTest extends TestCase
     }
 
     /** @test
-     * @throws HostAlreadyClaimed
-     * @throws HostRequestAlreadyDeleted
-     * @throws OauthHostClientNotSetup
-     * @throws OauthHostKeysMissing
+     * @throws Exception
+     */
+    public function aUserCannotClaimAHostRequestWithNoPersonalAccessToken()
+    {
+        $host_request = $this->hostRequest()->create();
+
+        $host_name = 'Test Host';
+        $this->mainUser->claim($host_request, $host_name);
+
+        $this->expectException(PersonalAccessClientMissing::class);
+
+        $host_request->toHost();
+    }
+
+    /** @test
+     * @throws Exception
      */
     public function hostRequestThatWasConvertedIntoAHostIsGone()
     {
+        $this->setUpPersonalClient();
+
         $host_request = $this->hostRequest()->create();
 
         $host_name = 'My super unique test name';
@@ -72,10 +89,12 @@ class HostRequestTest extends TestCase
     }
 
     /** @test
-     * @throws \Exception
+     * @throws Exception
      */
     public function deletingAHostRequestThenTryingToConvertItIntoAHostIsNotAllowed()
     {
+        $this->setUpPersonalClient();
+
         $host_request = $this->hostRequest()
             ->state(HostRequestStatusEnum::CLAIMED)
             ->hostname('My Test Host')

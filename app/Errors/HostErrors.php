@@ -78,6 +78,15 @@ class HostErrors
         );
     }
 
+    public static function oauthNoPersonalAccessToken()
+    {
+        return new ErrorResponse(
+            1008,
+            "Missing Personal Access Token",
+            Response::HTTP_INTERNAL_SERVER_ERROR
+        );
+    }
+
     public static function botHasNoHost()
     {
         return new ErrorResponse(

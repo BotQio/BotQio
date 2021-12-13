@@ -4,14 +4,15 @@ namespace App\Models;
 
 use App\Enums\HostRequestStatusEnum;
 use App\Exceptions\HostRequestAlreadyDeleted;
-use App\Exceptions\OauthHostClientNotSetup;
 use App\Exceptions\OauthHostKeysMissing;
+use App\Exceptions\PersonalAccessClientMissing;
 use App\ModelTraits\HostRequestDynamicAttributes;
 use App\ModelTraits\UuidKey;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\ClientRepository;
 
 /**
  * App\HostRequest.
@@ -81,13 +82,20 @@ class HostRequest extends Model
     /**
      * @return Host
      * @throws OauthHostKeysMissing
+     * @throws PersonalAccessClientMissing
      * @throws HostRequestAlreadyDeleted
      * @throws Exception
      */
-    public function toHost()
+    public function toHost(): Host
     {
         if (! file_exists(passport_private_key_path())) {
             throw new OauthHostKeysMissing('Private key for oauth is missing');
+        }
+
+        /** @var ClientRepository $clientRepository */
+        $clientRepository = app(ClientRepository::class);
+        if(is_null($clientRepository->getPersonalAccessClientId())) {
+            throw new PersonalAccessClientMissing();
         }
 
         $host = Host::make([
