@@ -12,8 +12,6 @@ class InfoCommandTest extends TestCase
     use PassportHelper;
     use HostCommandHelper;
 
-    protected $ignoreHostAuth = true;
-
     public function setUp(): void
     {
         parent::setUp();

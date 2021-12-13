@@ -26,7 +26,9 @@ class InfoCommand
                     'url' => $this->getWebsocketURL(),
                 ],
             ],
-        ], Response::HTTP_ACCEPTED);
+        ], Response::HTTP_ACCEPTED,
+            [],
+            JSON_UNESCAPED_SLASHES);
     }
 
     private function getWebsocketURL(): string
