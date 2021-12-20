@@ -21,5 +21,6 @@
         <server name="APP_ENV" value="testing"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="BROADCAST_DRIVER" value="test"/>
     </php>
 </phpunit>

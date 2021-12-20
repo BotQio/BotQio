@@ -23,7 +23,17 @@ class JobBuilder
     public function create()
     {
         return Job::unguarded(function () {
-            return Job::create($this->attributes);
+            /** @var Job $job */
+            $job = Job::create($this->attributes);
+
+            if(! is_null($job->bot_id)) {
+                /** @var Bot $bot */
+                $bot = Bot::find($job->bot_id);
+                $bot->current_job_id = $job->id;
+                $bot->save();
+            }
+
+            return $job;
         });
     }
 

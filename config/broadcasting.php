@@ -58,6 +58,10 @@ return [
             'driver' => 'null',
         ],
 
+        'test' => [
+            'driver' => 'test',
+        ],
+
     ],
 
 ];

@@ -1,6 +1,9 @@
 <?php
 
-use App\Models\User;
+use App\Broadcasting\BotChannel;
+use App\Broadcasting\HostChannel;
+use App\Broadcasting\JobChannel;
+use App\Broadcasting\UserChannel;
 use Illuminate\Support\Facades\Broadcast;
 
 /*
@@ -15,16 +18,7 @@ use Illuminate\Support\Facades\Broadcast;
 */
 
 
-Broadcast::channel('users.{id}', function (User $user, $id) {
-    return (int) $user->id === (int) $id;
-});
-
-Broadcast::channel('bots.{id}', function (User $user, $id) {
-    $bot = \App\Models\Bot::find($id);
-    return (int) $user->id === (int) $bot->creator_id;
-});
-
-Broadcast::channel('jobs.{id}', function (User $user, $id) {
-    $job = \App\Models\Job::find($id);
-    return (int) $user->id === (int) $job->creator_id;
-});
+Broadcast::channel('bots.{id}', BotChannel::class, ['guards' => ['web', 'host']]);
+Broadcast::channel('hosts.{id}', HostChannel::class, ['guards' => ['host']]);
+Broadcast::channel('jobs.{id}', JobChannel::class, ['guards' => ['web', 'host']]);
+Broadcast::channel('users.{id}', UserChannel::class, ['guards' => ['web']]);
