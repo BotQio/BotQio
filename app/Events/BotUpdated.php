@@ -29,13 +29,14 @@ class BotUpdated extends Event implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return array
      */
     public function broadcastOn()
     {
         return $this
             ->userChannel($this->bot->creator_id)
             ->botChannel($this->bot)
+            ->hostChannel($this->bot->host_id)
             ->channels();
     }
 }

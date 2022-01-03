@@ -25,7 +25,7 @@ class Event
         }
     }
 
-    protected function addChannel(Channel $channel)
+    protected function addChannel(Channel $channel): Event
     {
         $this->ensureNotEmptyChannels();
 
@@ -34,7 +34,7 @@ class Event
         return $this;
     }
 
-    protected function channels()
+    protected function channels(): array
     {
         $this->ensureNotEmptyChannels();
 
@@ -48,7 +48,7 @@ class Event
      * @param $user User|mixed
      * @return Event
      */
-    protected function userChannel($user)
+    protected function userChannel($user): Event
     {
         $user_id = $user;
         if ($user instanceof User) {
@@ -66,7 +66,7 @@ class Event
      * @param $bot Bot|mixed
      * @return Event
      */
-    protected function botChannel($bot)
+    protected function botChannel($bot): Event
     {
         $bot_id = $bot;
         if ($bot instanceof Bot) {
@@ -84,7 +84,7 @@ class Event
      * @param $job Job|mixed
      * @return Event
      */
-    protected function jobChannel($job)
+    protected function jobChannel($job): Event
     {
         $job_id = $job;
         if ($job instanceof Job) {
@@ -102,7 +102,7 @@ class Event
      * @param $host Host|mixed
      * @return Event
      */
-    protected function hostChannel($host)
+    protected function hostChannel($host): Event
     {
         $host_id = $host;
         if ($host instanceof Host) {
@@ -120,7 +120,7 @@ class Event
      * @param $cluster Cluster|mixed
      * @return Event
      */
-    protected function clusterChannel($cluster)
+    protected function clusterChannel($cluster): Event
     {
         $cluster_id = $cluster;
         if ($cluster instanceof Cluster) {
