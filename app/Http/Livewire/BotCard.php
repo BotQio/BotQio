@@ -22,7 +22,7 @@ class BotCard extends Component
         BotStatusEnum::WAITING => 'bg-gray-600 text-white',
         BotStatusEnum::ERROR => 'bg-red-600 text-white',
     ];
-    
+
     /**
      * @var Bot
      */
@@ -64,7 +64,7 @@ class BotCard extends Component
 
     public function getStatusColorProperty()
     {
-        if(Arr::exists($this->statusToColors, $this->bot->status)) {
+        if (Arr::exists($this->statusToColors, $this->bot->status)) {
             return $this->statusToColors[$this->bot->status];
         }
 
@@ -106,6 +106,9 @@ class BotCard extends Component
 
     public function updateCurrentJob()
     {
+        if (is_null($this->bot->currentJob)) {
+            return;
+        }
         $this->bot->currentJob->refresh();
     }
 

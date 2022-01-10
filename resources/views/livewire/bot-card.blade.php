@@ -32,13 +32,15 @@
         </div>
 
         <div class="p-2">
-            @if($this->bot->currentJob)
-                Job: <a href="{{ route('jobs.show', [$this->bot->currentJob]) }}">
-                    {{ $this->bot->currentJob->name }}
-                </a>
-            @else
-                Job: None
-            @endif
+            <div class="overflow-hidden text-overflow:ellipses">
+                @if($this->bot->currentJob)
+                    Job: <a href="{{ route('jobs.show', [$this->bot->currentJob]) }}">
+                        {{ $this->bot->currentJob->name }}
+                    </a>
+                @else
+                    Job: None
+                @endif
+            </div>
             @if($this->bot->error_text)
                 <div class="mt-2 border-red-600 border rounded p-1 text-red-600">
                     Error: {{ $this->bot->error_text }}
