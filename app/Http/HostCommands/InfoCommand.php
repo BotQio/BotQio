@@ -24,6 +24,7 @@ class InfoCommand
             'data' => [
                 'websocket' => [
                     'url' => $this->getWebsocketURL(),
+                    'auth' => url('/broadcasting/auth'),
                 ],
             ],
         ], Response::HTTP_ACCEPTED,

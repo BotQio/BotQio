@@ -3,6 +3,7 @@
 namespace Tests\Feature\Host\Commands;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 use Tests\Helpers\HostCommandHelper;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
@@ -12,22 +13,26 @@ class InfoCommandTest extends TestCase
     use PassportHelper;
     use HostCommandHelper;
 
-    public function setUp(): void
+    protected function setUrl($url)
     {
-        parent::setUp();
-
-        Config::set('app.url', 'https://example.com/');
+        Config::set('app.url', $url);
+        url()->forceRootUrl($url);
+        $scheme = Str::startsWith($url, 'http://') ? 'http' : 'https';
+        url()->forceScheme($scheme);
     }
 
     /** @test */
     public function info_command_returns_useful_server_info()
     {
+        $this->setUrl('https://example.com/');
+
         $this->command('Info')
             ->assertJson([
                 'status' => 'success',
                 'data' => [
                     'websocket' => [
                         'url' => 'wss://example.com/ws/app/BotQio-key',
+                        'auth' => 'https://example.com/broadcasting/auth',
                     ],
                 ],
             ]);
@@ -36,7 +41,7 @@ class InfoCommandTest extends TestCase
     /** @test */
     public function websocket_returns_ws_for_http()
     {
-        Config::set('app.url', 'http://example.com/');
+        $this->setUrl('http://example.com/');
 
         $this->command('Info')
             ->assertJson([
@@ -44,6 +49,7 @@ class InfoCommandTest extends TestCase
                 'data' => [
                     'websocket' => [
                         'url' => 'ws://example.com/ws/app/BotQio-key',
+                        'auth' => 'http://example.com/broadcasting/auth',
                     ],
                 ],
             ]);
