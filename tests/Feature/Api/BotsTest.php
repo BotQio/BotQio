@@ -2,8 +2,7 @@
 
 namespace Tests\Feature\Api;
 
-use App\Enums\BotStatusEnum;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -20,24 +19,32 @@ class BotsTest extends TestCase
 
         $bot = $this->bot()
             ->driver($driverConfig)
+            ->host($this->mainHost)
             ->create();
+        $bot->refresh(); // Forces all keys to show in array
 
         $this
             ->withTokenFromUser($this->mainUser)
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
+            ->assertExactJson([
                 'data' => [
                     [
-                        'id' => $bot->id,
-                        'name' => $bot->name,
-                        'type' => '3d_printer',
-                        'status' => BotStatusEnum::OFFLINE,
-                        'driver' => $driverConfig,
-                        'creator' => [
-                            'id' => $this->mainUser->id,
-                            'username' => $this->mainUser->username,
-                            'link' => url('/api/users', $this->mainUser->id),
+                        'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                        'links' => [
+                            'creator' => [
+                                'id' => $this->mainUser->id,
+                                'link' => route('api.users.view', $this->mainUser->id),
+                            ],
+                            'host' => [
+                                'id' => $this->mainHost->id,
+                                'link' => route('api.hosts.view', $this->mainHost->id),
+                            ],
+                            'cluster' => [
+                                'id' => $bot->cluster_id,
+                                'link' => route('api.clusters.view', $bot->cluster_id),
+                            ],
+                            'current_job' => null,
                         ],
                     ],
                 ],
@@ -56,31 +63,34 @@ class BotsTest extends TestCase
             ->create();
 
         $other_user = $this->user()->create();
-        $other_bot = $this->bot()
+        $this->bot()
             ->creator($other_user)
             ->create();
+        $bot->refresh();
 
         $this
             ->withTokenFromUser($this->mainUser)
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
+            ->assertExactJson([
                 'data' => [
                     [
-                        'id' => $bot->id,
-                        'name' => $bot->name,
-                        'type' => '3d_printer',
-                        'status' => BotStatusEnum::OFFLINE,
-                        'driver' => $driverConfig,
-                        'creator' => [
-                            'id' => $this->mainUser->id,
-                            'username' => $this->mainUser->username,
-                            'link' => url('/api/users', $this->mainUser->id),
+                        'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                        'links' => [
+                            'creator' => [
+                                'id' => $this->mainUser->id,
+                                'link' => route('api.users.view', $this->mainUser->id),
+                            ],
+                            'host' => null,
+                            'cluster' => [
+                                'id' => $bot->cluster_id,
+                                'link' => route('api.clusters.view', $bot->cluster_id),
+                            ],
+                            'current_job' => null,
                         ],
                     ],
                 ],
-            ])
-            ->assertDontSee($other_bot->name);
+            ]);
     }
 
     /** @test */
@@ -93,23 +103,25 @@ class BotsTest extends TestCase
         $bot = $this->bot()
             ->driver($driverConfig)
             ->create();
+        $bot->refresh();
 
         $this
             ->withTokenFromUser($this->mainUser)
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
-                'data' => [
-                    'id' => $bot->id,
-                    'name' => $bot->name,
-                    'type' => '3d_printer',
-                    'status' => BotStatusEnum::OFFLINE,
-                    'driver' => $driverConfig,
+            ->assertExactJson([
+                'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                'links' => [
                     'creator' => [
                         'id' => $this->mainUser->id,
-                        'username' => $this->mainUser->username,
-                        'link' => url('/api/users', $this->mainUser->id),
+                        'link' => route('api.users.view', $this->mainUser->id),
                     ],
+                    'host' => null,
+                    'cluster' => [
+                        'id' => $bot->cluster_id,
+                        'link' => route('api.clusters.view', $bot->cluster_id),
+                    ],
+                    'current_job' => null,
                 ],
             ]);
     }
@@ -124,23 +136,25 @@ class BotsTest extends TestCase
         $bot = $this->bot()
             ->driver($driverConfig)
             ->create();
+        $bot->refresh();
 
         $this
             ->withTokenFromUser($this->mainUser, 'bots')
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
-            ->assertJson([
-                'data' => [
-                    'id' => $bot->id,
-                    'name' => $bot->name,
-                    'type' => '3d_printer',
-                    'status' => BotStatusEnum::OFFLINE,
-                    'driver' => $driverConfig,
+            ->assertExactJson([
+                'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                'links' => [
                     'creator' => [
                         'id' => $this->mainUser->id,
-                        'username' => $this->mainUser->username,
-                        'link' => url('/api/users', $this->mainUser->id),
+                        'link' => route('api.users.view', $this->mainUser->id),
                     ],
+                    'host' => null,
+                    'cluster' => [
+                        'id' => $bot->cluster_id,
+                        'link' => route('api.clusters.view', $bot->cluster_id),
+                    ],
+                    'current_job' => null,
                 ],
             ]);
     }
@@ -168,6 +182,103 @@ class BotsTest extends TestCase
         $this
             ->withExceptionHandling()
             ->withTokenFromUser($this->mainUser, [])
+            ->getJson("/api/bots/{$bot->id}")
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /** @test */
+    public function hostCanSeeTheirBots()
+    {
+        $driverConfig = [
+            'type' => 'dummy',
+        ];
+
+        $bot = $this->bot()
+            ->driver($driverConfig)
+            ->host($this->mainHost)
+            ->create();
+        $bot->refresh(); // Forces all keys to show in array
+
+        $this
+            ->withTokenFromHost($this->mainHost)
+            ->getJson('/api/bots')
+            ->assertStatus(Response::HTTP_OK)
+            ->assertExactJson([
+                'data' => [
+                    [
+                        'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                        'links' => [
+                            'creator' => [
+                                'id' => $this->mainUser->id,
+                                'link' => route('api.users.view', $this->mainUser->id),
+                            ],
+                            'host' => [
+                                'id' => $this->mainHost->id,
+                                'link' => route('api.hosts.view', $this->mainHost->id),
+                            ],
+                            'cluster' => [
+                                'id' => $bot->cluster_id,
+                                'link' => route('api.clusters.view', $bot->cluster_id),
+                            ],
+                            'current_job' => null,
+                        ],
+                    ],
+                ],
+            ]);
+    }
+
+    /** @test */
+    public function hostCanSeeSpecificBot()
+    {
+        $driverConfig = [
+            'type' => 'dummy',
+        ];
+
+        $bot = $this->bot()
+            ->driver($driverConfig)
+            ->host($this->mainHost)
+            ->create();
+        $bot->refresh(); // Forces all keys to show in array
+
+        $this
+            ->withTokenFromHost($this->mainHost)
+            ->getJson("/api/bots/{$bot->id}")
+            ->assertStatus(Response::HTTP_OK)
+            ->assertExactJson([
+                'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                'links' => [
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'host' => [
+                        'id' => $this->mainHost->id,
+                        'link' => route('api.hosts.view', $this->mainHost->id),
+                    ],
+                    'cluster' => [
+                        'id' => $bot->cluster_id,
+                        'link' => route('api.clusters.view', $bot->cluster_id),
+                    ],
+                    'current_job' => null,
+                ],
+            ]);
+    }
+
+    /** @test */
+    public function hostCannotSeeBotThatIsNotTheirs()
+    {
+        $driverConfig = [
+            'type' => 'dummy',
+        ];
+
+        $bot = $this->bot()
+            ->driver($driverConfig)
+            ->create();
+        $bot->refresh(); // Forces all keys to show in array
+
+        $this
+            ->withExceptionHandling()
+            ->withTokenFromHost($this->mainHost)
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }

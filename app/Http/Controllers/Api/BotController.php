@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\BotResource;
 use App\Models\Bot;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\BotResource;
+use App\Models\Host;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,18 +13,16 @@ class BotController extends Controller
 {
     public function index()
     {
-        /** @var User $user */
+        /** @var User|Host $user */
         $user = Auth::user();
 
-        $bots = $user->bots()->with('creator')->get();
+        $bots = $user->bots()->get();
 
         return BotResource::collection($bots);
     }
 
     public function show(Bot $bot)
     {
-        $bot->load('creator');
-
         return new BotResource($bot);
     }
 }

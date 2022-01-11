@@ -105,6 +105,17 @@ class Bot extends Model
         return $this->belongsTo(Job::class);
     }
 
+    public function toArray()
+    {
+        $array = parent::toArray();
+
+        if ($array['status'] != BotStatusEnum::ERROR) {
+            unset($array['error_text']);
+        }
+
+        return $array;
+    }
+
     /**
      * Scope to only include bots belonging to the currently authenticated user.
      *

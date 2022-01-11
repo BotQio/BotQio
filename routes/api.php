@@ -14,18 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')
-    ->group(function () {
-        Route::get('users/{user}', 'UserController@show')
-            ->middleware('can:view,user')
-            ->middleware('scope:users');
 
-        Route::prefix('bots')
-            ->middleware('scope:bots')
-            ->group(function () {
-                Route::get('/', 'BotController@index');
 
-                Route::get('{bot}', 'BotController@show')
-                    ->middleware('can:view,bot');
-            });
-    });
+Route::get('bots', 'BotController@index')->name('api.bots.index');
+Route::get('bots/{bot}', 'BotController@show')->name('api.bots.view')
+    ->middleware('can:view,bot');
+
+
+Route::get('clusters/{cluster}', 'ClusterController@show')->name('api.clusters.view')
+    ->middleware('can:view,cluster');
+
+
+Route::get('hosts/{host}', 'HostController@show')->name('api.hosts.view')
+    ->middleware('can:view,host');
+
+
+Route::get('jobs/{job}', 'JobController@show')->name('api.jobs.view')
+    ->middleware('can:view,job');
+
+
+Route::get('users/{user}', 'UserController@show')->name('api.users.view')
+    ->middleware('can:view,user');
