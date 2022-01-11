@@ -29,6 +29,7 @@ Route::get('hosts/{host}', 'HostController@show')->name('api.hosts.view')
     ->middleware('can:view,host');
 
 
+Route::get('jobs', 'JobController@index')->name('api.jobs.index');
 Route::get('jobs/{job}', 'JobController@show')->name('api.jobs.view')
     ->middleware('can:view,job');
 

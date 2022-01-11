@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\Bot;
 use App\Models\Host;
 use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 use Laravel\Passport\HasApiTokens;
@@ -12,30 +13,21 @@ use Laravel\Passport\HasApiTokens;
 class BotPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * @param User|Host $hasApiTokens
-     * @return bool
-     */
-    protected function usingToken($hasApiTokens): bool
-    {
-        return !is_null($hasApiTokens->token());
-    }
+    use UsesTokens;
 
     /**
      * Determine whether the user can view the bot.
      *
      * @param User|Host $authed
      * @param Bot $bot
-     * @return bool|Response
+     * @return bool
+     * @throws AuthorizationException
      */
-    public function view($authed, Bot $bot)
+    public function view($authed, Bot $bot): bool
     {
-        if ($authed instanceof User) {
-            if ($this->usingToken($authed) && !$authed->tokenCan('bots')) {
-                return $this->deny("Token does not have required scope \"bots\"");
-            }
+        $this->userNeedsScope($authed, 'bots');
 
+        if ($authed instanceof User) {
             return $bot->creator_id === $authed->id;
         }
 

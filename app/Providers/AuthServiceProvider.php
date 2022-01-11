@@ -15,6 +15,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         App\Models\Bot::class => App\Policies\BotPolicy::class,
+        App\Models\Job::class => App\Policies\JobPolicy::class,
         App\Models\User::class => App\Policies\UserPolicy::class,
     ];
 
@@ -34,6 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'host' => 'Be a host',
             'bots' => 'View info about bots',
+            'jobs' => 'View info about jobs',
             'users' => 'View info about users',
         ]);
     }

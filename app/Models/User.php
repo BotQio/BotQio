@@ -8,6 +8,7 @@ use App\Exceptions\HostAlreadyClaimed;
 use App\ModelTraits\CreatesMyCluster;
 use App\ModelTraits\FirstUserIsPromotedToAdmin;
 use App\ModelTraits\UuidKey;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -45,6 +46,7 @@ use Laravel\Passport\HasApiTokens;
  */
 class User extends Authenticatable
 {
+    use Authorizable;
     use UuidKey;
     use Notifiable;
     use HasApiTokens;
@@ -110,7 +112,7 @@ class User extends Authenticatable
             if ($request->claimer_id != $this->id) {
                 throw new HostAlreadyClaimed('This host request has already been claimed by someone else');
             }
-        } catch (\Exception | \Throwable $e) {
+        } catch (\Exception|\Throwable $e) {
             throw new HostAlreadyClaimed('Unexpected exception while trying to grab host request');
         }
     }
@@ -118,6 +120,11 @@ class User extends Authenticatable
     public function bots()
     {
         return $this->hasMany(Bot::class, 'creator_id');
+    }
+
+    public function jobs()
+    {
+        return $this->hasMany(Job::class, 'creator_id');
     }
 
     public function clusters()

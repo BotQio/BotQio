@@ -6,6 +6,7 @@ use App\ModelTraits\HostAuthTrait;
 use App\ModelTraits\UuidKey;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 use Laravel\Passport\HasApiTokens;
 
 /**
@@ -38,6 +39,7 @@ use Laravel\Passport\HasApiTokens;
  */
 class Host extends Model implements Authenticatable
 {
+    use Authorizable;
     use UuidKey;
     use HasApiTokens;
 
