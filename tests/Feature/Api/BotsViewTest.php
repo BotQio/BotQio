@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
-class BotsTest extends TestCase
+class BotsViewTest extends TestCase
 {
     use PassportHelper;
 
