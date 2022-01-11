@@ -28,6 +28,10 @@ class BotResource extends JsonResource
         return [
             'data' => $this->resource->toArray(),
             'links' => [
+                'self' => [
+                    'id' => $this->id,
+                    'link' => route('api.bots.view', $this->id),
+                ],
                 'creator' => [
                     'id' => $this->creator_id,
                     'link' => route('api.users.view', $this->creator_id),

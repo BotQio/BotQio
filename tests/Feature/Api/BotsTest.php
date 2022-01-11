@@ -32,6 +32,10 @@ class BotsTest extends TestCase
                     [
                         'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
                         'links' => [
+                            'self' => [
+                                'id' => $bot->id,
+                                'link' => route('api.bots.view', $bot->id),
+                            ],
                             'creator' => [
                                 'id' => $this->mainUser->id,
                                 'link' => route('api.users.view', $this->mainUser->id),
@@ -77,6 +81,10 @@ class BotsTest extends TestCase
                     [
                         'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
                         'links' => [
+                            'self' => [
+                                'id' => $bot->id,
+                                'link' => route('api.bots.view', $bot->id),
+                            ],
                             'creator' => [
                                 'id' => $this->mainUser->id,
                                 'link' => route('api.users.view', $this->mainUser->id),
@@ -112,6 +120,10 @@ class BotsTest extends TestCase
             ->assertExactJson([
                 'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
+                    'self' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
@@ -145,6 +157,10 @@ class BotsTest extends TestCase
             ->assertExactJson([
                 'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
+                    'self' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
@@ -208,6 +224,10 @@ class BotsTest extends TestCase
                     [
                         'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
                         'links' => [
+                            'self' => [
+                                'id' => $bot->id,
+                                'link' => route('api.bots.view', $bot->id),
+                            ],
                             'creator' => [
                                 'id' => $this->mainUser->id,
                                 'link' => route('api.users.view', $this->mainUser->id),
@@ -247,6 +267,10 @@ class BotsTest extends TestCase
             ->assertExactJson([
                 'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
+                    'self' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
