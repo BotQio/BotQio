@@ -55,6 +55,11 @@ class File extends Model
         'uploader_id',
     ];
 
+    protected $hidden = [
+        'filesystem',
+        'path',
+    ];
+
     /**
      * @param UploadedFile $uploadedFile
      * @param User $uploader

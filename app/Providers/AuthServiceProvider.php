@@ -35,6 +35,7 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'host' => 'Be a host',
             'bots' => 'View info about bots',
+            'files' => 'View info about files',
             'jobs' => 'View info about jobs',
             'users' => 'View info about users',
         ]);

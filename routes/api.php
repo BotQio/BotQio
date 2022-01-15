@@ -24,6 +24,9 @@ Route::get('bots/{bot}', 'BotController@show')->name('api.bots.view')
 Route::get('clusters/{cluster}', 'ClusterController@show')->name('api.clusters.view')
     ->middleware('can:view,cluster');
 
+Route::get('files/{file}', 'FileController@show')->name('api.files.view')
+    ->middleware('can:view,file');
+
 
 Route::get('hosts/{host}', 'HostController@show')->name('api.hosts.view')
     ->middleware('can:view,host');

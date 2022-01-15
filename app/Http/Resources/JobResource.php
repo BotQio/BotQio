@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * @property string id
  * @property string creator_id
+ * @property string file_id
  * @property string worker_type
  * @property string worker_id
  * @property string bot_id
@@ -34,6 +35,10 @@ class JobResource extends JsonResource
                 'creator' => [
                     'id' => $this->creator_id,
                     'link' => route('api.users.view', $this->creator_id),
+                ],
+                'file' => [
+                    'id' => $this->file_id,
+                    'link' => route('api.files.view', $this->file_id),
                 ],
                 'worker' => $this->when(!is_null($this->worker_id), function () {
                     if ($this->worker_type == 'bots') {

@@ -14,7 +14,8 @@ class JobsViewTest extends TestCase
     public function user_can_see_their_jobs()
     {
         $bot = $this->bot()->create();
-        $job = $this->job()->worker($bot)->create();
+        $file = $this->file()->stl()->create();
+        $job = $this->job()->file($file)->worker($bot)->create();
 
         $this
             ->withTokenFromUser($this->mainUser)
@@ -33,6 +34,10 @@ class JobsViewTest extends TestCase
                                 'id' => $this->mainUser->id,
                                 'link' => route('api.users.view', $this->mainUser->id),
                             ],
+                            'file' => [
+                                'id' => $file->id,
+                                'link' => route('api.files.view', $file->id),
+                            ],
                             'worker' => [
                                 'id' => $bot->id,
                                 'link' => route('api.bots.view', $bot->id),
@@ -48,7 +53,8 @@ class JobsViewTest extends TestCase
     public function user_can_see_their_specific_job()
     {
         $bot = $this->bot()->create();
-        $job = $this->job()->worker($bot)->create();
+        $file = $this->file()->stl()->create();
+        $job = $this->job()->file($file)->worker($bot)->create();
 
         $this
             ->withTokenFromUser($this->mainUser)
@@ -64,6 +70,10 @@ class JobsViewTest extends TestCase
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
                     ],
                     'worker' => [
                         'id' => $bot->id,
@@ -78,7 +88,8 @@ class JobsViewTest extends TestCase
     public function worker_link_is_clusters_for_cluster_worker()
     {
         $cluster = $this->cluster()->create();
-        $job = $this->job()->worker($cluster)->create();
+        $file = $this->file()->stl()->create();
+        $job = $this->job()->file($file)->worker($cluster)->create();
 
         $this
             ->withTokenFromUser($this->mainUser)
@@ -94,6 +105,10 @@ class JobsViewTest extends TestCase
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
                     ],
                     'worker' => [
                         'id' => $cluster->id,
@@ -121,7 +136,8 @@ class JobsViewTest extends TestCase
     public function user_token_authorized_with_jobs_scope()
     {
         $bot = $this->bot()->create();
-        $job = $this->job()->worker($bot)->create();
+        $file = $this->file()->stl()->create();
+        $job = $this->job()->file($file)->worker($bot)->create();
 
         $this
             ->withTokenFromUser($this->mainUser, 'jobs')
@@ -137,6 +153,10 @@ class JobsViewTest extends TestCase
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
                     ],
                     'worker' => [
                         'id' => $bot->id,
@@ -164,7 +184,8 @@ class JobsViewTest extends TestCase
     public function host_token_can_see_job_if_it_can_see_associated_bot()
     {
         $bot = $this->bot()->host($this->mainHost)->create();
-        $job = $this->job()->bot($bot)->create();
+        $file = $this->file()->stl()->create();
+        $job = $this->job()->file($file)->bot($bot)->create();
 
         $this
             ->withTokenFromHost($this->mainHost)
@@ -180,6 +201,10 @@ class JobsViewTest extends TestCase
                     'creator' => [
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
                     ],
                     'worker' => [
                         'id' => $bot->id,

@@ -59,8 +59,6 @@ class Job extends Model
         'file_id',
     ];
 
-    protected $appends = ['url'];
-
     protected $dispatchesEvents = [
         'created' => JobCreated::class,
         'updated' => JobUpdated::class,
@@ -102,10 +100,5 @@ class Job extends Model
     public function scopeMine($query)
     {
         return $query->where('creator_id', Auth::user()->id);
-    }
-
-    public function getUrlAttribute()
-    {
-        return $this->file->url();
     }
 }
