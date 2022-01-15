@@ -2,7 +2,9 @@
 
 namespace App\Errors;
 
-use Illuminate\Http\Response;
+
+
+use Symfony\Component\HttpFoundation\Response;
 
 class HostErrors
 {

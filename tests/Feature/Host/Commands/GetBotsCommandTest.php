@@ -6,7 +6,7 @@ use App\Actions\AssignJobToBot;
 use App\Enums\BotStatusEnum;
 use App\Enums\JobStatusEnum;
 use App\Errors\HostErrors;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -44,19 +44,32 @@ class GetBotsCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     [
-                        'id' => $bot->id,
-                        'name' => $bot->name,
-                        'type' => '3d_printer',
-                        'status' => BotStatusEnum::OFFLINE,
-                        'job_available' => false,
-                        'driver' => $driverConfig,
+                        'data' => $bot->attributesToArray(),
+                        'links' => [
+                            'self' => [
+                                'id' => $bot->id,
+                                'link' => route('api.bots.view', $bot->id),
+                            ],
+                            'creator' => [
+                                'id' => $this->mainUser->id,
+                                'link' => route('api.users.view', $this->mainUser->id),
+                            ],
+                            'host' => [
+                                'id' => $this->mainHost->id,
+                                'link' => route('api.hosts.view', $this->mainHost->id),
+                            ],
+                            'cluster' => [
+                                'id' => $bot->cluster_id,
+                                'link' => route('api.clusters.view', $bot->cluster_id),
+                            ],
+                            'current_job' => null,
+                        ],
                     ],
                 ],
-            ])
-            ->assertDontSee('creator');
+            ]);
     }
 
     /** @test */
@@ -79,19 +92,32 @@ class GetBotsCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     [
-                        'id' => $bot->id,
-                        'name' => $bot->name,
-                        'type' => '3d_printer',
-                        'status' => BotStatusEnum::OFFLINE,
-                        'job_available' => true,
-                        'driver' => $driverConfig,
+                        'data' => $bot->attributesToArray(),
+                        'links' => [
+                            'self' => [
+                                'id' => $bot->id,
+                                'link' => route('api.bots.view', $bot->id),
+                            ],
+                            'creator' => [
+                                'id' => $this->mainUser->id,
+                                'link' => route('api.users.view', $this->mainUser->id),
+                            ],
+                            'host' => [
+                                'id' => $this->mainHost->id,
+                                'link' => route('api.hosts.view', $this->mainHost->id),
+                            ],
+                            'cluster' => [
+                                'id' => $bot->cluster_id,
+                                'link' => route('api.clusters.view', $bot->cluster_id),
+                            ],
+                            'current_job' => null,
+                        ],
                     ],
                 ],
-            ])
-            ->assertDontSee('creator');
+            ]);
     }
 
     /** @test */
@@ -124,24 +150,35 @@ class GetBotsCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     [
-                        'id' => $bot->id,
-                        'name' => $bot->name,
-                        'status' => BotStatusEnum::JOB_ASSIGNED,
-                        'type' => '3d_printer',
-                        'job_available' => false,
-                        'driver' => $driverConfig,
-                        'job' => [
-                            'id' => $job->id,
-                            'status' => JobStatusEnum::ASSIGNED,
-                            'url' => $job->file->url(),
+                        'data' => $bot->attributesToArray(),
+                        'links' => [
+                            'self' => [
+                                'id' => $bot->id,
+                                'link' => route('api.bots.view', $bot->id),
+                            ],
+                            'creator' => [
+                                'id' => $this->mainUser->id,
+                                'link' => route('api.users.view', $this->mainUser->id),
+                            ],
+                            'host' => [
+                                'id' => $this->mainHost->id,
+                                'link' => route('api.hosts.view', $this->mainHost->id),
+                            ],
+                            'cluster' => [
+                                'id' => $bot->cluster_id,
+                                'link' => route('api.clusters.view', $bot->cluster_id),
+                            ],
+                            'current_job' => [
+                                'id' => $bot->current_job_id,
+                                'link' => route('api.jobs.view', $bot->current_job_id),
+                            ],
                         ],
                     ],
                 ],
-            ])
-            ->assertDontSee('creator');
+            ]);
     }
 
     /** @test */
@@ -166,7 +203,7 @@ class GetBotsCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                 ],
             ]);

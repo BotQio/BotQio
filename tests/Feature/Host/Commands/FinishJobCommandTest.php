@@ -6,7 +6,7 @@ use App\Enums\BotStatusEnum;
 use App\Enums\JobStatusEnum;
 use App\Errors\HostErrors;
 use App\Events\JobFinished;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -45,7 +45,7 @@ class FinishJobCommandTest extends TestCase
             ->file($file)
             ->create();
 
-        $this
+        $response = $this
             ->withTokenFromHost($this->mainHost)
             ->postJson('/host', [
                 'command' => 'FinishJob',
@@ -53,14 +53,35 @@ class FinishJobCommandTest extends TestCase
                     'id' => $job->id,
                 ],
             ])
-            ->assertStatus(Response::HTTP_OK)
+            ->assertStatus(Response::HTTP_OK);
+
+        $job->refresh();
+
+        $response
             ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    'id' => $job->id,
-                    'name' => $job->name,
-                    'status' => JobStatusEnum::QUALITY_CHECK,
-                    'url' => $file->url(),
+                'ok' => true,
+                'data' => $job->attributesToArray(),
+                'links' => [
+                    'self' => [
+                        'id' => $job->id,
+                        'link' => route('api.jobs.view', $job->id),
+                    ],
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
+                    ],
+                    'worker' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
+                    'bot' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                 ],
             ]);
 

@@ -26,7 +26,7 @@ class JobResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => $this->resource->toArray(),
+            'data' => $this->resource->attributesToArray(),
             'links' => [
                 'self' => [
                     'id' => $this->id,
@@ -65,10 +65,10 @@ class JobResource extends JsonResource
         ];
     }
 
-    public function with($request)
+    public function with($request): array
     {
         return [
-            'status' => 'success',
+            'ok' => true,
         ];
     }
 }

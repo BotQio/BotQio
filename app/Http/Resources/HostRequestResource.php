@@ -38,10 +38,10 @@ class HostRequestResource extends JsonResource
         ];
     }
 
-    public function with($request)
+    public function with($request): array
     {
         return [
-            'status' => 'success',
+            'ok' => true,
         ];
     }
 }

@@ -28,9 +28,10 @@ class BotsViewTest extends TestCase
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
+                'ok' => true,
                 'data' => [
                     [
-                        'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                        'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                         'links' => [
                             'self' => [
                                 'id' => $bot->id,
@@ -77,9 +78,10 @@ class BotsViewTest extends TestCase
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
+                'ok' => true,
                 'data' => [
                     [
-                        'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                        'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                         'links' => [
                             'self' => [
                                 'id' => $bot->id,
@@ -118,7 +120,8 @@ class BotsViewTest extends TestCase
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
-                'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                'ok' => true,
+                'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
                     'self' => [
                         'id' => $bot->id,
@@ -155,7 +158,8 @@ class BotsViewTest extends TestCase
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
-                'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                'ok' => true,
+                'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
                     'self' => [
                         'id' => $bot->id,
@@ -220,9 +224,10 @@ class BotsViewTest extends TestCase
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
+                'ok' => true,
                 'data' => [
                     [
-                        'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                        'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                         'links' => [
                             'self' => [
                                 'id' => $bot->id,
@@ -265,7 +270,8 @@ class BotsViewTest extends TestCase
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertExactJson([
-                'data' => $bot->toArray(),  // TODO Actually verify what this spits out in another test
+                'ok' => true,
+                'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
                     'self' => [
                         'id' => $bot->id,

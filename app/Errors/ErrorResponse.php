@@ -17,8 +17,8 @@ class ErrorResponse extends JsonResponse
         $this->httpStatusCode = $httpStatusCode;
 
         parent::__construct(
-            $data = $this->toArray(),
-            $status = $httpStatusCode
+            $this->toArray(),
+            $httpStatusCode
         );
     }
 
@@ -52,7 +52,7 @@ class ErrorResponse extends JsonResponse
     public function toArray()
     {
         return [
-            'status' => 'error',
+            'ok' => false,
             'code' => $this->code,
             'message' => $this->message,
         ];

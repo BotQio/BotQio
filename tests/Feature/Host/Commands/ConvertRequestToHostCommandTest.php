@@ -6,10 +6,10 @@ use App\Enums\HostRequestStatusEnum;
 use App\Errors\HostErrors;
 use App\Exceptions\HostAlreadyClaimed;
 use App\Models\Host;
-use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 use Lcobucci\JWT\Parser as JwtParser;
 use Lcobucci\JWT\Token;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -75,7 +75,7 @@ class ConvertRequestToHostCommandTest extends TestCase
 
         $convert_to_host_response
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'host' => [
                         'id' => $host->id,
@@ -110,9 +110,10 @@ class ConvertRequestToHostCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
             ])
             ->assertJsonStructure([
+                'ok',
                 'data' => [
                     'access_token',
                     'host' => [
@@ -170,7 +171,7 @@ class ConvertRequestToHostCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure([
-                'status',
+                'ok',
                 'data' => [
                     'access_token',
                 ],
@@ -180,7 +181,7 @@ class ConvertRequestToHostCommandTest extends TestCase
 
         $convert_to_host_response
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'access_token' => $access_token,
                 ],

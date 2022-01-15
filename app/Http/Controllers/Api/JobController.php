@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\JobCollection;
 use App\Http\Resources\JobResource;
 use App\Models\Host;
 use App\Models\Job;
@@ -18,7 +19,7 @@ class JobController extends Controller
 
         $jobs = $user->jobs()->paginate();
 
-        return JobResource::collection($jobs);
+        return new JobCollection($jobs);
     }
 
     public function show(Job $job)

@@ -28,4 +28,11 @@ class UserResource extends JsonResource
             'link' => url('/api/users', $this->id),
         ];
     }
+
+    public function with($request): array
+    {
+        return [
+            'ok' => true,
+        ];
+    }
 }

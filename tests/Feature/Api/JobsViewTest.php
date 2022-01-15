@@ -24,7 +24,7 @@ class JobsViewTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'data' => $job->refresh()->toArray(),
+                        'data' => $job->refresh()->attributesToArray(),
                         'links' => [
                             'self' => [
                                 'id' => $job->id,
@@ -61,7 +61,7 @@ class JobsViewTest extends TestCase
             ->getJson("/api/jobs/{$job->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'data' => $job->refresh()->toArray(),
+                'data' => $job->refresh()->attributesToArray(),
                 'links' => [
                     'self' => [
                         'id' => $job->id,
@@ -96,7 +96,7 @@ class JobsViewTest extends TestCase
             ->getJson("/api/jobs/{$job->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'data' => $job->refresh()->toArray(),
+                'data' => $job->refresh()->attributesToArray(),
                 'links' => [
                     'self' => [
                         'id' => $job->id,
@@ -144,7 +144,7 @@ class JobsViewTest extends TestCase
             ->getJson("/api/jobs/{$job->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'data' => $job->refresh()->toArray(),
+                'data' => $job->refresh()->attributesToArray(),
                 'links' => [
                     'self' => [
                         'id' => $job->id,
@@ -192,7 +192,7 @@ class JobsViewTest extends TestCase
             ->getJson("/api/jobs/{$job->id}")
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'data' => $job->refresh()->toArray(),
+                'data' => $job->refresh()->attributesToArray(),
                 'links' => [
                     'self' => [
                         'id' => $job->id,

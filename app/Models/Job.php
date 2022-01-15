@@ -64,6 +64,10 @@ class Job extends Model
         'updated' => JobUpdated::class,
     ];
 
+    protected $hidden = [
+        'bot',
+    ];
+
     public function creator()
     {
         return $this->belongsTo(User::class);

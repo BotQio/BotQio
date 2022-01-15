@@ -5,7 +5,7 @@ namespace Tests\Feature\Host\Commands;
 use App\Enums\BotStatusEnum;
 use App\Enums\JobStatusEnum;
 use App\Errors\HostErrors;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -52,12 +52,28 @@ class StartJobCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
-                'data' => [
-                    'id' => $job->id,
-                    'name' => $job->name,
-                    'status' => JobStatusEnum::IN_PROGRESS,
-                    'url' => $file->url(),
+                'data' => $job->refresh()->attributesToArray(),
+                'links' => [
+                    'self' => [
+                        'id' => $job->id,
+                        'link' => route('api.jobs.view', $job->id),
+                    ],
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
+                    ],
+                    'worker' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
+                    'bot' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                 ],
             ]);
 

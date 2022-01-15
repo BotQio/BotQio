@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\BotCollection;
 use App\Http\Resources\BotResource;
 use App\Models\Bot;
 use App\Http\Controllers\Controller;
@@ -18,7 +19,7 @@ class BotController extends Controller
 
         $bots = $user->bots()->get();
 
-        return BotResource::collection($bots);
+        return new BotCollection($bots);
     }
 
     public function show(Bot $bot)

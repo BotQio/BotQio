@@ -5,7 +5,7 @@ namespace Tests\Feature\Host\Commands;
 use App\Enums\HostRequestStatusEnum;
 use App\Models\HostRequest;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class CreateHostRequestCommandTest extends TestCase
@@ -25,7 +25,7 @@ class CreateHostRequestCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure([
-                'status',
+                'ok',
                 'data' => [
                     'id',
                     'status',
@@ -43,7 +43,7 @@ class CreateHostRequestCommandTest extends TestCase
 
         $response
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'id' => $host_request->id,
                     'status' => HostRequestStatusEnum::REQUESTED,
@@ -61,7 +61,7 @@ class CreateHostRequestCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure([
-                'status',
+                'ok',
                 'data' => [
                     'id',
                     'status',
@@ -79,7 +79,7 @@ class CreateHostRequestCommandTest extends TestCase
 
         $response
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'id' => $host_request->id,
                     'status' => HostRequestStatusEnum::REQUESTED,
@@ -96,7 +96,7 @@ class CreateHostRequestCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure([
-                'status',
+                'ok',
                 'data' => [
                     'id',
                     'status',
@@ -114,7 +114,7 @@ class CreateHostRequestCommandTest extends TestCase
 
         $response
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'id' => $host_request->id,
                     'status' => HostRequestStatusEnum::REQUESTED,
@@ -134,7 +134,7 @@ class CreateHostRequestCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_CREATED)
             ->assertJsonStructure([
-                'status',
+                'ok',
                 'data' => [
                     'id',
                 ],
@@ -143,7 +143,7 @@ class CreateHostRequestCommandTest extends TestCase
         $host_request_id = $response->json('data.id');
 
         $response->assertJson([
-            'status' => 'success',
+            'ok' => true,
             'data' => [
                 'id' => $host_request_id,
             ],

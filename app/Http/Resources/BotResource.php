@@ -26,7 +26,7 @@ class BotResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => $this->resource->toArray(),
+            'data' => $this->resource->attributesToArray(),
             'links' => [
                 'self' => [
                     'id' => $this->id,
@@ -49,10 +49,17 @@ class BotResource extends JsonResource
                 'current_job' => $this->when(!is_null($this->current_job_id), function () {
                     return [
                         'id' => $this->current_job_id,
-                        'link' => route('api.jobs.view', $this->creator_id),
+                        'link' => route('api.jobs.view', $this->current_job_id),
                     ];
                 }, null),
             ],
+        ];
+    }
+
+    public function with($request): array
+    {
+        return [
+            'ok' => true,
         ];
     }
 }

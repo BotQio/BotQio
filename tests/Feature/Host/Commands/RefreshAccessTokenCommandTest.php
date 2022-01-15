@@ -45,7 +45,7 @@ class RefreshAccessTokenCommandTest extends TestCase
         $refresh_response
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
+                'ok' => 'true',
                 'data' => [
                     'host' => [
                         'id' => $this->mainHost->id,

@@ -4,7 +4,7 @@ namespace Tests\Feature\Host\Commands;
 
 use App\Enums\JobStatusEnum;
 use App\Errors\HostErrors;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -29,10 +29,11 @@ class UpdateJobProgressCommandTest extends TestCase
     {
         $file = $this->file()->gcode()->create();
 
+        $bot = $this->bot()->host($this->mainHost)->create();
         $job = $this
             ->job()
             ->state(JobStatusEnum::IN_PROGRESS)
-            ->bot($this->bot()->host($this->mainHost)->create())
+            ->bot($bot)
             ->file($file)
             ->create();
 
@@ -46,14 +47,29 @@ class UpdateJobProgressCommandTest extends TestCase
                 ],
             ])
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
-                'status' => 'success',
-                'data' => [
-                    'id' => $job->id,
-                    'name' => $job->name,
-                    'status' => JobStatusEnum::IN_PROGRESS,
-                    'progress' => 50.0,
-                    'url' => $file->url(),
+            ->assertJson([
+                'data' => $job->refresh()->attributesToArray(),
+                'links' => [
+                    'self' => [
+                        'id' => $job->id,
+                        'link' => route('api.jobs.view', $job->id),
+                    ],
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
+                    ],
+                    'worker' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
+                    'bot' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                 ],
             ]);
 
@@ -67,10 +83,11 @@ class UpdateJobProgressCommandTest extends TestCase
     {
         $file = $this->file()->gcode()->create();
 
+        $bot = $this->bot()->host($this->mainHost)->create();
         $job = $this
             ->job()
             ->state(JobStatusEnum::IN_PROGRESS)
-            ->bot($this->bot()->host($this->mainHost)->create())
+            ->bot($bot)
             ->file($file)
             ->create();
 
@@ -84,14 +101,29 @@ class UpdateJobProgressCommandTest extends TestCase
                 ],
             ])
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
-                'status' => 'success',
-                'data' => [
-                    'id' => $job->id,
-                    'name' => $job->name,
-                    'status' => JobStatusEnum::IN_PROGRESS,
-                    'progress' => 50.0,
-                    'url' => $file->url(),
+            ->assertJson([
+                'data' => $job->refresh()->attributesToArray(),
+                'links' => [
+                    'self' => [
+                        'id' => $job->id,
+                        'link' => route('api.jobs.view', $job->id),
+                    ],
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
+                    ],
+                    'worker' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
+                    'bot' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                 ],
             ]);
 
@@ -121,10 +153,11 @@ class UpdateJobProgressCommandTest extends TestCase
     {
         $file = $this->file()->gcode()->create();
 
+        $bot = $this->bot()->host($this->mainHost)->create();
         $job = $this
             ->job()
             ->state(JobStatusEnum::IN_PROGRESS)
-            ->bot($this->bot()->host($this->mainHost)->create())
+            ->bot($bot)
             ->file($file)
             ->create();
 
@@ -138,14 +171,29 @@ class UpdateJobProgressCommandTest extends TestCase
                 ],
             ])
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
-                'status' => 'success',
-                'data' => [
-                    'id' => $job->id,
-                    'name' => $job->name,
-                    'status' => JobStatusEnum::IN_PROGRESS,
-                    'progress' => 42.42,
-                    'url' => $file->url(),
+            ->assertJson([
+                'data' => $job->refresh()->attributesToArray(),
+                'links' => [
+                    'self' => [
+                        'id' => $job->id,
+                        'link' => route('api.jobs.view', $job->id),
+                    ],
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
+                    ],
+                    'worker' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
+                    'bot' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                 ],
             ]);
 
@@ -163,14 +211,29 @@ class UpdateJobProgressCommandTest extends TestCase
                 ],
             ])
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
-                'status' => 'success',
-                'data' => [
-                    'id' => $job->id,
-                    'name' => $job->name,
-                    'status' => JobStatusEnum::IN_PROGRESS,
-                    'progress' => 42.42,
-                    'url' => $file->url(),
+            ->assertJson([
+                'data' => $job->refresh()->attributesToArray(),
+                'links' => [
+                    'self' => [
+                        'id' => $job->id,
+                        'link' => route('api.jobs.view', $job->id),
+                    ],
+                    'creator' => [
+                        'id' => $this->mainUser->id,
+                        'link' => route('api.users.view', $this->mainUser->id),
+                    ],
+                    'file' => [
+                        'id' => $file->id,
+                        'link' => route('api.files.view', $file->id),
+                    ],
+                    'worker' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
+                    'bot' => [
+                        'id' => $bot->id,
+                        'link' => route('api.bots.view', $bot->id),
+                    ],
                 ],
             ]);
 

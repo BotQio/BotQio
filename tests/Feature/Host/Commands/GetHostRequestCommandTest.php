@@ -5,7 +5,7 @@ namespace Tests\Feature\Host\Commands;
 use App\Enums\HostRequestStatusEnum;
 use App\Errors\HostErrors;
 use App\Exceptions\HostAlreadyClaimed;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
 
 class GetHostRequestCommandTest extends TestCase
@@ -24,7 +24,7 @@ class GetHostRequestCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'id' => $host_request->id,
                     'status' => HostRequestStatusEnum::REQUESTED,
@@ -50,7 +50,7 @@ class GetHostRequestCommandTest extends TestCase
             ])
             ->assertStatus(Response::HTTP_OK)
             ->assertJson([
-                'status' => 'success',
+                'ok' => true,
                 'data' => [
                     'id' => $host_request->id,
                     'status' => HostRequestStatusEnum::CLAIMED,

@@ -23,7 +23,7 @@ class FileResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'data' => $this->resource->toArray(),
+            'data' => $this->resource->attributesToArray(),
             'links' => [
                 'self' => [
                     'id' => $this->id,
@@ -35,6 +35,13 @@ class FileResource extends JsonResource
                 ],
                 'download' => $this->url(),
             ]
+        ];
+    }
+
+    public function with($request): array
+    {
+        return [
+            'ok' => true,
         ];
     }
 }
