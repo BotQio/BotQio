@@ -27,6 +27,9 @@ Auth::routes();
 Route::get('home', 'HomeController@index')
     ->name('home');
 
+Route::get('download', 'FileController@download')
+    ->name('files.download');
+
 Route::get('bots/{bot}/delete', 'BotController@delete')->name('bots.delete');
 Route::resource('bots', 'BotController');
 Route::resource('clusters', 'ClusterController');

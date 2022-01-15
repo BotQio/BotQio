@@ -106,6 +106,8 @@ class File extends Model
 
     public function url()
     {
-        return Storage::disk('public')->url($this->path);
+        return Storage::disk($this->filesystem)->temporaryUrl(
+            $this->path, now()->addMinutes(5)
+        );
     }
 }

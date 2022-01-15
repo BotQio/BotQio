@@ -9,9 +9,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
+use Symfony\Component\HttpFoundation\Response;
 
 class FileController extends Controller
 {
@@ -22,7 +24,18 @@ class FileController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', [
+            'except' => [
+                'download',
+            ],
+        ]);
+    }
+
+    public function download(Request $request)
+    {
+        abort_unless($request->hasValidSignature(), Response::HTTP_UNAUTHORIZED);
+
+        return Storage::disk('public')->download($request->get('path'));
     }
 
     /**
@@ -85,7 +98,7 @@ class FileController extends Controller
             'file' => [new Extension(['gcode', 'stl'])]
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return response()->json([
                 "error" => "Unsupported file type: {$originalFile->getClientOriginalExtension()}"
             ], 422);
@@ -99,7 +112,7 @@ class FileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\File  $file
+     * @param \App\Models\File $file
      * @return \Illuminate\Http\Response
      */
     public function show(File $file)
@@ -110,7 +123,7 @@ class FileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\File  $file
+     * @param \App\Models\File $file
      * @return \Illuminate\Http\Response
      */
     public function edit(File $file)
@@ -121,8 +134,8 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\File  $file
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\File $file
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, File $file)
@@ -133,7 +146,7 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\File  $file
+     * @param \App\Models\File $file
      * @return \Illuminate\Http\Response
      */
     public function destroy(File $file)
