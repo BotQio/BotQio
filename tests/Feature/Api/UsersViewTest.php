@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Api;
 
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
-class UsersTest extends TestCase
+class UsersViewTest extends TestCase
 {
     use PassportHelper;
 
@@ -58,6 +58,16 @@ class UsersTest extends TestCase
         $this
             ->withExceptionHandling()
             ->withTokenFromUser($this->mainUser, [])
+            ->getJson("/api/users/{$this->mainUser->id}")
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
+    /** @test */
+    public function hostCannotAccessSpecificUserEvenIfUserOwnsHost()
+    {
+        $this
+            ->withExceptionHandling()
+            ->withTokenFromHost($this->mainHost)
             ->getJson("/api/users/{$this->mainUser->id}")
             ->assertStatus(Response::HTTP_FORBIDDEN);
     }
