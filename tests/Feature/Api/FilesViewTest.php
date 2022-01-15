@@ -30,6 +30,7 @@ class FilesViewTest extends TestCase
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
                     ],
+                    'download' => $file->url(),
                 ],
             ]);
     }
@@ -54,6 +55,7 @@ class FilesViewTest extends TestCase
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
                     ],
+                    'download' => $file->url(),
                 ],
             ]);
     }
@@ -104,6 +106,7 @@ class FilesViewTest extends TestCase
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
                     ],
+                    'download' => $file->url(),
                 ],
             ]);
     }

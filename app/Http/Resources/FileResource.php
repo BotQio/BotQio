@@ -10,6 +10,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *
  * @property string id
  * @property string uploader_id
+ * @method url()
  */
 class FileResource extends JsonResource
 {
@@ -32,6 +33,7 @@ class FileResource extends JsonResource
                     'id' => $this->uploader_id,
                     'link' => route('api.users.view', $this->uploader_id),
                 ],
+                'download' => $this->url(),
             ]
         ];
     }
