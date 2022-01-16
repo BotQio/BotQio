@@ -72,7 +72,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'is_admin',
+        'email',  # Maybe email should only be hidden sometimes?
     ];
 
     protected $dispatchesEvents = [

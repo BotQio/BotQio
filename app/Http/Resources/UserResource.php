@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -17,15 +18,19 @@ class UserResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return array
      */
-    public function toArray($request)
+    public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'username' => $this->username,
-            'link' => url('/api/users', $this->id),
+            'data' => $this->resource->attributesToArray(),
+            'links' => [
+                'self' => [
+                    'id' => $this->id,
+                    'link' => route('api.users.view', $this->id),
+                ],
+            ],
         ];
     }
 

@@ -27,7 +27,7 @@ class BotsViewTest extends TestCase
             ->withTokenFromUser($this->mainUser)
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
+            ->assertJson([
                 'ok' => true,
                 'data' => [
                     [
@@ -77,7 +77,7 @@ class BotsViewTest extends TestCase
             ->withTokenFromUser($this->mainUser)
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
+            ->assertJson([
                 'ok' => true,
                 'data' => [
                     [
@@ -119,7 +119,7 @@ class BotsViewTest extends TestCase
             ->withTokenFromUser($this->mainUser)
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
+            ->assertJson([
                 'ok' => true,
                 'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
@@ -157,7 +157,7 @@ class BotsViewTest extends TestCase
             ->withTokenFromUser($this->mainUser, 'bots')
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
+            ->assertJson([
                 'ok' => true,
                 'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [
@@ -223,7 +223,7 @@ class BotsViewTest extends TestCase
             ->withTokenFromHost($this->mainHost)
             ->getJson('/api/bots')
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
+            ->assertJson([
                 'ok' => true,
                 'data' => [
                     [
@@ -269,7 +269,7 @@ class BotsViewTest extends TestCase
             ->withTokenFromHost($this->mainHost)
             ->getJson("/api/bots/{$bot->id}")
             ->assertStatus(Response::HTTP_OK)
-            ->assertExactJson([
+            ->assertJson([
                 'ok' => true,
                 'data' => $bot->attributesToArray(),  // TODO Actually verify what this spits out in another test
                 'links' => [

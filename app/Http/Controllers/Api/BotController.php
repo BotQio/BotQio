@@ -17,7 +17,7 @@ class BotController extends Controller
         /** @var User|Host $user */
         $user = Auth::user();
 
-        $bots = $user->bots()->get();
+        $bots = $user->bots()->paginate();
 
         return new BotCollection($bots);
     }
