@@ -26,16 +26,22 @@ class FileController extends Controller
     {
         $this->middleware('auth', [
             'except' => [
-                'download',
+                'downloadPath',
+                'downloadFile',
             ],
         ]);
     }
 
-    public function download(Request $request)
+    public function downloadPath(Request $request): Response
     {
         abort_unless($request->hasValidSignature(), Response::HTTP_UNAUTHORIZED);
 
         return Storage::disk('public')->download($request->get('path'));
+    }
+
+    public function downloadFile(File $file): Response
+    {
+        return redirect()->to($file->signedUrl());
     }
 
     /**

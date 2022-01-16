@@ -20,6 +20,7 @@ use Illuminate\Support\Str;
  * @property int $size
  * @property string $type
  * @property string $uploader_id
+ * @property string url
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read User $uploader
@@ -58,6 +59,10 @@ class File extends Model
     protected $hidden = [
         'filesystem',
         'path',
+    ];
+
+    protected $appends = [
+        'download_url',
     ];
 
     /**
@@ -104,7 +109,12 @@ class File extends Model
         $this->attributes['size'] = Storage::disk('public')->size($path);
     }
 
-    public function url()
+    public function getDownloadUrlAttribute(): string
+    {
+        return route('files.download', [$this]);
+    }
+
+    public function signedUrl(): string
     {
         return Storage::disk($this->filesystem)->temporaryUrl(
             $this->path, now()->addMinutes(5)

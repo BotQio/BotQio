@@ -43,4 +43,16 @@ class FilePolicy
         return false;
     }
 
+
+    /**
+     * @param User|Host $authed
+     * @param File $file
+     * @return bool
+     * @throws AuthorizationException
+     */
+    public function download($authed, File $file): bool
+    {
+        // Right now this is the same as view but might need to be different so we separate it.
+        return $this->view($authed, $file);
+    }
 }

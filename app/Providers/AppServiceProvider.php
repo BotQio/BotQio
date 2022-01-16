@@ -41,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
 
         Storage::disk('public')->buildTemporaryUrlsUsing(function ($path, $expiration, $options) {
             return URL::temporarySignedRoute(
-                'files.download',
+                'paths.download',
                 $expiration,
                 array_merge($options, ['path' => $path])
             );

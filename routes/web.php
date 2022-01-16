@@ -27,7 +27,13 @@ Auth::routes();
 Route::get('home', 'HomeController@index')
     ->name('home');
 
-Route::get('download', 'FileController@download')
+Route::get('download', 'FileController@downloadPath')
+    ->name('paths.download');
+Route::get('files/{file}/download', 'FileController@downloadFile')
+    ->middleware([
+        'auth:api,host,web',
+        'can:download,file',
+    ])
     ->name('files.download');
 
 Route::get('bots/{bot}/delete', 'BotController@delete')->name('bots.delete');

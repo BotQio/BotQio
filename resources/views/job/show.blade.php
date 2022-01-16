@@ -53,7 +53,7 @@
             <div class="border rounded mb-4">
                 <div class="text-center bg-gray-200">Actions</div>
                 <div class="p-4 flex justify-center">
-                    <a href="{{ Storage::url($job->file->path) }}"
+                    <a href="{!! $job->file->download_url !!}"
                        class="my-auto hover:text-white hover:bg-blue-300 m-1 p-1 rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
                              height="2rem"
