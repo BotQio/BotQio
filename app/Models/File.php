@@ -24,6 +24,7 @@ use Illuminate\Support\Str;
  * @property \Carbon\Carbon|null $created_at
  * @property \Carbon\Carbon|null $updated_at
  * @property-read User $uploader
+ * @property-read string $download_url
  * @method static \Illuminate\Database\Eloquent\Builder|File whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereFilesystem($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereId($value)
@@ -63,6 +64,10 @@ class File extends Model
 
     protected $appends = [
         'download_url',
+    ];
+
+    protected $casts = [
+        'size' => 'int',
     ];
 
     /**

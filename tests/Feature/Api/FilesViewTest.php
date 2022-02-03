@@ -30,7 +30,7 @@ class FilesViewTest extends TestCase
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
                     ],
-                    'download' => $file->signedUrl(),
+                    'download' => $file->download_url,
                 ],
             ]);
     }
@@ -55,7 +55,7 @@ class FilesViewTest extends TestCase
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
                     ],
-                    'download' => $file->signedUrl(),
+                    'download' => $file->download_url,
                 ],
             ]);
     }
@@ -106,7 +106,7 @@ class FilesViewTest extends TestCase
                         'id' => $this->mainUser->id,
                         'link' => route('api.users.view', $this->mainUser->id),
                     ],
-                    'download' => $file->signedUrl(),
+                    'download' => $file->download_url,
                 ],
             ]);
     }
