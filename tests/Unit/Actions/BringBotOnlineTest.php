@@ -64,7 +64,7 @@ class BringBotOnlineTest extends TestCase
     }
 
     /** @test */
-    public function bringingBotOnlineClearsError()
+    public function bringingBotOnlineClearsErrorAndJob()
     {
         $this->fakesEvents(BotUpdated::class);
 
@@ -72,10 +72,13 @@ class BringBotOnlineTest extends TestCase
             ->state(BotStatusEnum::ERROR)
             ->error_text("This is a test")
             ->create();
+        $this->job()->bot($bot)->create();
+        $bot->refresh();
 
         app(BringBotOnline::class)->execute($bot);
 
         $this->assertEquals(BotStatusEnum::IDLE, $bot->status);
         $this->assertNull($bot->error_text);
+        $this->assertNull($bot->current_job_id);
     }
 }

@@ -24,6 +24,7 @@ class BringBotOnline
         }
 
         $bot->status = BotStatusEnum::IDLE;
+        $bot->current_job_id = null;
         $bot->error_text = null;
         $bot->save();
     }
