@@ -4,9 +4,9 @@ namespace Tests\Feature\Host\Commands;
 
 use App\Actions\FindJobForBot;
 use App\Errors\HostErrors;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Bus;
 use Spatie\QueueableAction\ActionJob;
+use Symfony\Component\HttpFoundation\Response;
 use Tests\Helpers\PassportHelper;
 use Tests\TestCase;
 
@@ -52,7 +52,7 @@ class GetAJobCommandTest extends TestCase
                 'bot' => $bot->id,
             ])
             ->assertStatus(Response::HTTP_FORBIDDEN)
-            ->assertExactJson(HostErrors::jobIsNotAssignedToThisHost()->toArray());
+            ->assertExactJson(HostErrors::botIsNotAssignedToThisHost()->toArray());
     }
 
     /** @test */

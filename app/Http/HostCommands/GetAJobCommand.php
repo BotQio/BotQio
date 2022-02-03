@@ -7,9 +7,9 @@ use App\Errors\ErrorResponse;
 use App\Errors\HostErrors;
 use App\Models\Bot;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class GetAJobCommand
 {
@@ -28,7 +28,7 @@ class GetAJobCommand
         $bot = Bot::find($data['bot']);
 
         if ($bot->host_id != Auth::user()->id) {
-            return HostErrors::jobIsNotAssignedToThisHost();
+            return HostErrors::botIsNotAssignedToThisHost();
         }
 
         app(FindJobForBot::class)
