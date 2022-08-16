@@ -9,7 +9,7 @@
             <div class="relative" x-data="{ open: false }" @menu-item-clicked.window="open = false">
                 <button
                         @click="open = true"
-                        class="relative rounded-full shadow whitespace-no-wrap flex fill-current items-center p-1 pl-4 pr-2 cursor-pointer z-10 {{ $this->status_color }}">
+                        class="relative rounded-full shadow whitespace-no-wrap flex fill-current items-center p-1 pl-4 pr-2 cursor-pointer {{ $this->status_color }}">
                     {{ $this->status }}
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-6">
                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
@@ -18,7 +18,7 @@
                 @if(count($this->menu_items) > 0)
                     <div x-show="open"
                          @click.away="open = false"
-                         class="mt-2 py-2 w-48 absolute bg-white border border-gray-500 shadow-xl rounded-lg right-0">
+                         class="mt-2 py-2 w-48 absolute bg-white border border-gray-500 shadow-xl rounded-lg right-0 z-10">
                         @foreach($this->menu_items as $menu_title => $action)
                             <a href="#"
                                wire:click="{{ $action }}"

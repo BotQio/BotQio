@@ -11,6 +11,7 @@ module.exports = {
   purge: [
       './resources/views/**/*.php',
       './resources/js/**/*.vue',
-      './app/Services/*.php'
+      './app/Services/*.php',
+      './app/Http/Livewire/*.php'
   ],
 };

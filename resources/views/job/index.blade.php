@@ -13,7 +13,7 @@
             </a>
         </div>
 
-        <div class="mt-4 flex flex-col w-full md:w-1/2 md:mx-auto">
+        <div class="mt-4 flex flex-col w-full lg:w-1/2 lg:mx-auto">
             <div class="flex w-full">
                 <a class="w-1/2 text-center text-xl p-1 border-l border-t border-b rounded-tl">Name</a>
                 <a class="w-1/2 text-center text-xl p-1 border-r border-t border-b rounded-tr">Status</a>
