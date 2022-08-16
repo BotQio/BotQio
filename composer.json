@@ -16,7 +16,7 @@
     "require": {
         "php": "^7.3|^8.0",
         "ext-json": "*",
-        "akaunting/setting": "^1.2",
+        "akaunting/laravel-setting": "^1.2",
         "barryvdh/laravel-ide-helper": "^2.3",
         "beyondcode/laravel-websockets": "^2.0.0-beta.32",
         "doctrine/dbal": "^2.12.1",
@@ -36,11 +36,12 @@
         "spatie/laravel-queueable-action": "^2.7"
     },
     "require-dev": {
+        "deployer/deployer": "^7.0",
+        "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.13.0",
         "mockery/mockery": "^1.4.2",
         "nunomaduro/collision": "^5.0",
-        "phpunit/phpunit": "^9.3.3",
-        "facade/ignition": "^2.5"
+        "phpunit/phpunit": "^9.3.3"
     },
     "autoload": {
         "files": [

@@ -23,7 +23,7 @@ set('writable_recursive', false);
 set('writable_chmod_recursive', false);
 add('writable_dirs', [
     'storage/framework/cache/data',
-    'storage/framework/logs/laravel.log',
+    // 'storage/logs/laravel.log',   TODO Writable file?
 ]);
 set('allow_anonymous_stats', false);
 

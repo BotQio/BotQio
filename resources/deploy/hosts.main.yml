@@ -11,3 +11,6 @@ hosts:
 
   dev.botq.io:
     <<: *dev-server
+
+  bot.jnesselr.org:
+    <<: *dev-server
