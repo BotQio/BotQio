@@ -52,6 +52,12 @@ return [
             'provider' => 'hosts',
             'hash' => false,
         ],
+
+        'octoprint_api' => [
+            'driver' => 'octoprint-token',
+            'provider' => 'octoprint_api_users',
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -80,6 +86,11 @@ return [
         'hosts' => [
             'driver' => 'eloquent',
             'model' => App\Models\Host::class,
+        ],
+
+        'octoprint_api_users' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\OctoPrintAPIUser::class,
         ],
     ],
 

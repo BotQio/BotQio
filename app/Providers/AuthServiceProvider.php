@@ -4,6 +4,9 @@ namespace App\Providers;
 
 use App;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\Passport;
 
 class AuthServiceProvider extends ServiceProvider
@@ -39,5 +42,16 @@ class AuthServiceProvider extends ServiceProvider
             'jobs' => 'View info about jobs',
             'users' => 'View info about users',
         ]);
+
+        Auth::viaRequest('octoprint-token', function (Request $request) {
+            $apiToken = $request->header('X-Api-Key');
+            abort_if(is_null($apiToken), 401, "No API Key found");
+
+            /** @var App\Models\OctoPrintAPIUser $user */
+            $user = App\Models\OctoPrintAPIUser::where('api_token', $apiToken)->first();
+            abort_if(is_null($user), 401, "OctoPrint Token not found");
+
+            return $user;
+        });
     }
 }

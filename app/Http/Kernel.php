@@ -45,9 +45,12 @@ class Kernel extends HttpKernel
 
         'host' => [
             'throttle:60,1',
-            'bindings',
             'scope:host',
             'auth:host',
+        ],
+
+        'octoprint' => [
+            'throttle:60,1',
         ],
     ];
 

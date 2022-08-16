@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Auth;
  * @property-read User $creator
  * @property-read Job|null $currentJob
  * @property-read Host|null $host
+ * @property-read OctoPrintAPIUser|null $octoPrintAPIUser;
  * @method static \Illuminate\Database\Eloquent\Builder|Bot mine()
  * @method static \Illuminate\Database\Eloquent\Builder|Bot whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Bot whereCreatorId($value)
@@ -103,6 +104,11 @@ class Bot extends Model
     public function currentJob()
     {
         return $this->belongsTo(Job::class);
+    }
+
+    public function octoPrintAPIUser(): \Illuminate\Database\Eloquent\Relations\MorphOne
+    {
+        return $this->morphOne(OctoPrintAPIUser::class, 'worker');
     }
 
     public function toArray()
