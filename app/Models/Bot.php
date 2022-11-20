@@ -11,7 +11,6 @@ use App\ModelTraits\HasOctoPrintUser;
 use App\ModelTraits\UuidKey;
 use App\ModelTraits\WorksOnJobsTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 
 /**

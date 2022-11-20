@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\JobStatusEnum;
 use App\Events\JobCreated;
 use App\Events\JobUpdated;
 use App\ModelTraits\UuidKey;
@@ -104,5 +105,20 @@ class Job extends Model
     public function scopeMine($query)
     {
         return $query->where('creator_id', Auth::user()->id);
+    }
+
+    public function copy($count = 1)
+    {
+        for ($i = 0; $i < $count; $i++) {
+            $job = new Job([
+                'name' => $this->name,
+                'status' => JobStatusEnum::QUEUED,
+                'creator_id' => $this->creator_id,
+                'file_id' => $this->file_id,
+            ]);
+
+            $job->worker()->associate($this->worker);
+            $job->save();
+        }
     }
 }
