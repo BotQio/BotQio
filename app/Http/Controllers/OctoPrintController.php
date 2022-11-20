@@ -3,16 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\JobStatusEnum;
-use App\Models\Bot;
-use App\Models\Cluster;
 use App\Models\File;
 use App\Models\Job;
 use App\Models\OctoPrintAPIUser;
 use App\Rules\Extension;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class OctoPrintController extends Controller
@@ -67,7 +63,7 @@ class OctoPrintController extends Controller
             $job = new Job([
                 'name' => $jobName,
                 'status' => JobStatusEnum::QUEUED,
-                'creator_id' => $octoPrintUser->creator,
+                'creator_id' => $octoPrintUser->creator_id,
                 'file_id' => $file->id,
             ]);
 
