@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\ModelTraits\HasOctoPrintUser;
 use App\ModelTraits\UuidKey;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,7 @@ use Illuminate\Support\Facades\Auth;
 class Cluster extends Model
 {
     use UuidKey;
+    use HasOctoPrintUser;
 
     /**
      * The attributes that are mass assignable.

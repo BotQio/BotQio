@@ -7,9 +7,11 @@ use App\Events\BotCreated;
 use App\Events\BotDeleted;
 use App\Events\BotUpdated;
 use App\ModelTraits\BelongsToHostTrait;
+use App\ModelTraits\HasOctoPrintUser;
 use App\ModelTraits\UuidKey;
 use App\ModelTraits\WorksOnJobsTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -58,6 +60,7 @@ class Bot extends Model
     use UuidKey;
     use WorksOnJobsTrait;
     use BelongsToHostTrait;
+    use HasOctoPrintUser;
 
     /**
      * The attributes that are mass assignable.
@@ -104,11 +107,6 @@ class Bot extends Model
     public function currentJob()
     {
         return $this->belongsTo(Job::class);
-    }
-
-    public function octoPrintAPIUser(): \Illuminate\Database\Eloquent\Relations\MorphOne
-    {
-        return $this->morphOne(OctoPrintAPIUser::class, 'worker');
     }
 
     public function toArray()

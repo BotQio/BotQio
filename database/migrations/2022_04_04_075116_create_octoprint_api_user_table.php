@@ -21,6 +21,9 @@ class CreateOctoPrintAPIUserTable extends Migration
             $table->string('worker_type');
 
             $table->string('api_token');
+
+            $table->uuid('creator_id');
+            $table->foreign('creator_id')->references('id')->on('users');
         });
     }
 

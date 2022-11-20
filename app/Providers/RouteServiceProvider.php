@@ -41,6 +41,7 @@ class RouteServiceProvider extends ServiceProvider
         Route::model('host', App\Models\Host::class);
         Route::model('host_request', App\Models\HostRequest::class);
         Route::model('job', App\Models\Job::class);
+        Route::model('octoprint_user', App\Models\OctoPrintAPIUser::class);
         Route::model('user', App\Models\User::class);
     }
 
@@ -107,19 +108,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapOctoPrintRoutes()
     {
-        Route::macro('octoprint', function($base) {
-            $base = rtrim($base, '/');
+        Route::prefix('octoprint/{octoprint_user}')
+            ->middleware('octoprint')
+            ->group(function() {
+                Route::get("api/version", [OctoPrintController::class, 'version']);
 
-            Route::prefix('octoprint')
-                ->middleware('octoprint')
-                ->group(function() use ($base) {
-                    Route::get("$base/api/version", [OctoPrintController::class, 'version']);
-
-                    Route::post("$base/api/files/local", [OctoPrintController::class, 'upload'])
-                        ->middleware(['auth:octoprint_api']);
-                });
-        });
-
-        Route::octoprint('bot/{bot}');
+                Route::post("api/files/local", [OctoPrintController::class, 'upload'])
+                    ->middleware(['auth:octoprint_api']);
+            });
     }
 }

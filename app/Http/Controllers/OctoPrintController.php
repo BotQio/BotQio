@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\JobStatusEnum;
 use App\Models\Bot;
+use App\Models\Cluster;
 use App\Models\File;
 use App\Models\Job;
 use App\Models\OctoPrintAPIUser;
@@ -55,10 +56,7 @@ class OctoPrintController extends Controller
 
         /** @var OctoPrintAPIUser $octoPrintUser */
         $octoPrintUser = $request->user();
-        /** @var Bot $worker */
-        $worker = $octoPrintUser->worker; // Hardcoded worker type for now
-
-        $file = File::fromUploadedFile($uploadedFile, $worker->creator);
+        $file = File::fromUploadedFile($uploadedFile, $octoPrintUser->creator);
 
         $jobName = $file->name;
         if(! empty($basePath)) {
@@ -69,16 +67,16 @@ class OctoPrintController extends Controller
             $job = new Job([
                 'name' => $jobName,
                 'status' => JobStatusEnum::QUEUED,
-                'creator_id' => $worker->creator_id,
+                'creator_id' => $octoPrintUser->creator,
                 'file_id' => $file->id,
             ]);
 
-            $job->worker()->associate($worker);
+            $job->worker()->associate($octoPrintUser->worker);
             $job->save();
         } else {
-            response("F YOU TOO", 500);
+            response("F YOU TOO", 500);  // TODO shouldQueue never seems to be false
         }
 
-        return response("", ); // TODO Return an actual useful response
+        return response("", ); // TODO Return an actual useful response?
     }
 }
